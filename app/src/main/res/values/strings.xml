@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Real Estate</string>
+
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">R9GAe14lb2Rciwn2ESPUWYNKjjvxv4z8dQ2wDmFn</string>
+    <string name="back4app_client_key">m8tFyfpP3AypLzFksugNtTomOfr0dQ5JwTlxFMq4</string>
+
+    <string name="title_activity_login_main">LoginActivityMain</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+</resources>
