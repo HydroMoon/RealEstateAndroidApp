@@ -5,11 +5,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PropertyInfo extends AppCompatActivity {
 
@@ -23,7 +28,12 @@ public class PropertyInfo extends AppCompatActivity {
     TextView addedDate;
     TextView soldDate;
 
+    Button buy;
+    Button call;
+
     GridView serviceGrid;
+
+    List<String> serviceItems = new ArrayList<>();
 
 
     @Override
@@ -44,11 +54,28 @@ public class PropertyInfo extends AppCompatActivity {
         area = findViewById(R.id.property_surface);
         location = findViewById(R.id.property_location);
 
+        buy = findViewById(R.id.buy);
+        call = findViewById(R.id.call);
+
         priceUSD = findViewById(R.id.property_price_usd);
         priceSDG = findViewById(R.id.property_price_sdg);
 
         Log.d("DEBUG", getIntent().getExtras().getString("objectID"));
         getPropertyInfo(getIntent().getExtras().getString("objectID"));
+
+        buy.setOnClickListener(v -> {
+
+            ParseObject buyHistory = new ParseObject("buy_history");
+            buyHistory.put("buy_id", "OBJECT_ID");
+
+            buyHistory.saveInBackground(e -> {
+                if (e == null) {
+
+                } else {
+                    //error
+                }
+            });
+        });
 
     }
 
@@ -72,6 +99,60 @@ public class PropertyInfo extends AppCompatActivity {
                         type.setText("الناصية الثانية");
                     }
 
+                    //Service list
+                    if (result.getInt("masjid") == 1)
+                        serviceItems.add("مسجد");
+
+                    if (result.getInt("hospital") == 1)
+                        serviceItems.add("مركز صحي");
+
+                    if (result.getInt("police_station") == 1)
+                        serviceItems.add("مركز شرطة");
+
+                    if (result.getInt("school") == 1)
+                        serviceItems.add("مدرسة");
+
+                    if (result.getInt("mall") == 1)
+                        serviceItems.add("مركز تجاري");
+
+                    if (result.getInt("main_road") == 1)
+                        serviceItems.add("شارع رئيسي");
+
+                    if (result.getInt("branch_road") == 1)
+                        serviceItems.add("شارع فرعي");
+
+                    if (result.getInt("bakery") == 1)
+                        serviceItems.add("مخبز");
+
+                    if (result.getInt("station") == 1)
+                        serviceItems.add("محطة");
+
+                    if (result.getInt("pharmacy") == 1)
+                        serviceItems.add("صيدلية");
+
+                    if (result.getInt("park") == 1)
+                        serviceItems.add("منتزه");
+
+                    if (result.getInt("petrol_station") == 1)
+                        serviceItems.add("محطة وقود");
+
+                    if (result.getInt("venue") == 1)
+                        serviceItems.add("صالة مناسبات");
+
+                    if (result.getInt("atm") == 1)
+                        serviceItems.add("صراف آلي");
+
+                    if (result.getInt("square") == 1)
+                        serviceItems.add("ميدان");
+
+                    if (result.getInt("laundry") == 1)
+                        serviceItems.add("مغسلة");
+
+                    if (result.getInt("barber_shop") == 1)
+                        serviceItems.add("حلاق");
+
+                    serviceGrid.setAdapter(new ArrayAdapter<>(getApplicationContext(), R.layout.gridcell, R.id.service_name, serviceItems));
+                    
                     //Status (Sold, Not Sold)
                     if (result.getInt("sold") == 1) {
                         status.setText("Sold");
