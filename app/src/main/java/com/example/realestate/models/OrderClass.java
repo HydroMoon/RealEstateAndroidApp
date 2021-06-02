@@ -7,15 +7,17 @@ public class OrderClass {
     private String buyID;
     private String userID;
     private String propertyNumber;
+    private String phone;
     private int status;
 
-    public OrderClass(String name, String objectID, String buyID, String userID, int status, String propertyNumber) {
+    public OrderClass(String name, String objectID, String buyID, String userID, int status, String propertyNumber, String phone) {
         this.name = name;
         this. objectID = objectID;
         this.buyID = buyID;
         this.userID = userID;
         this.status = status;
         this.propertyNumber = propertyNumber;
+        this.phone = phone;
     }
 
     public String getName() {
@@ -40,5 +42,9 @@ public class OrderClass {
 
     public String getPropertyNumber() {
         return propertyNumber;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 }

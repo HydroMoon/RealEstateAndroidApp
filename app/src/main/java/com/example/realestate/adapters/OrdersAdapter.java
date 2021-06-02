@@ -38,6 +38,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
         TextView gasName;
         TextView gasPrice;
         TextView gasLoc;
+        TextView phone;
         Button cancelOrder;
         Button confirm;
         Button act;
@@ -49,6 +50,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
             gasName = itemView.findViewById(R.id.row_title);
             gasPrice = itemView.findViewById(R.id.row_price);
             gasLoc = itemView.findViewById(R.id.row_loc_title);
+            phone = itemView.findViewById(R.id.phone);
             cancelOrder = itemView.findViewById(R.id.row_cancel_btn);
             confirm = itemView.findViewById(R.id.confirm_row_btn);
             act = itemView.findViewById(R.id.idfab);
@@ -122,6 +124,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
 
         holder.gasName.setText(current.getName());
         holder.gasPrice.setText(current.getPropertyNumber());
+        holder.phone.setText(current.getPhone());
         if (current.getStatus() == 0) {
             holder.gasLoc.setText("في إنتظار الموافقة");
         } else if (current.getStatus()== 1) {

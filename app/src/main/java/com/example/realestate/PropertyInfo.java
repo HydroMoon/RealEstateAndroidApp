@@ -80,6 +80,7 @@ public class PropertyInfo extends AppCompatActivity {
             buyHistory.put("user_id", ParseUser.getCurrentUser().getObjectId());
             buyHistory.put("status", 0);
             buyHistory.put("property_number", number.getText().toString());
+            buyHistory.put("phone", ParseUser.getCurrentUser().getUsername());
 
             buyHistory.saveInBackground(e -> {
                 if (e == null) {

@@ -31,6 +31,16 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/row_title"
+                android:layout_marginStart="10dp"
+                android:textSize="12sp"
+                android:text="0925426241" />
+
+            <TextView
                 android:id="@+id/row_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,6 +57,7 @@
                 android:id="@+id/row_loc_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@+id/phone"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginStart="10dp"

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,12 +66,16 @@ public class MainActivity extends AppCompatActivity {
                     orderList.clear();
                     for (ParseObject object: objects) {
                         orderList.add(new OrderClass(object.getString("user_name"), object.getObjectId(), object.getString("buy_id"),
-                                object.getString("user_id"), object.getInt("status"), object.getString("property_number")));
+                                object.getString("user_id"), object.getInt("status"), object.getString("property_number"),
+                                object.getString("phone")));
                     }
                     final AlertDialog adb = new AlertDialog.Builder(MainActivity.this, R.style.AlertDiagTheme).create();
                     LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
                     View view = inflater.inflate(R.layout.orders_recycle, null);
                     adb.setView(view);
+                    adb.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", (dialog, which) -> {
+                        dialog.dismiss();
+                    });
 
                     RecyclerView order_rv = view.findViewById(R.id.recycler_orders);
                     order_rv.setHasFixedSize(true);
