@@ -37,13 +37,16 @@ public class RealEstateClass {
     private int propertyPriceUSD;
     private int propertyPriceSDG;
 
+    private int propertySold;
+
     public RealEstateClass(String objectID, int propertyID, int propertyArea, String propertyLocation, int propertyServices,
                            int property1stCorner, int property2ndCorner, int propertySingle, int propertyMasjid,
                            int propertyHospital, int propertyPoliceStation, int propertySchool, int propertyMall,
                            int propertyMainRoad, int propertyBranchRoad, int propertyBakery, int propertyStation,
                            int propertyPharmacy, int propertyPark, int propertyPetrolStation, int propertyVenue,
                            int propertyATM, int propertySquare, int propertyLaundry, int propertyBarber,
-                           int property1stGrade, int property2ndGrade, int property3rdGrade, int propertyPriceUSD, int propertyPriceSDG) {
+                           int property1stGrade, int property2ndGrade, int property3rdGrade, int propertyPriceUSD,
+                           int propertyPriceSDG, int propertySold) {
 
         this.objectID = objectID;
         this.propertyID = propertyID;
@@ -75,6 +78,7 @@ public class RealEstateClass {
         this.property3rdGrade = property3rdGrade;
         this.propertyPriceUSD = propertyPriceUSD;
         this.propertyPriceSDG = propertyPriceSDG;
+        this.propertySold = propertySold;
     }
 
     public int getPropertyID() {
@@ -311,5 +315,9 @@ public class RealEstateClass {
 
     public String getObjectID() {
         return objectID;
+    }
+
+    public int getPropertySold() {
+        return propertySold;
     }
 }

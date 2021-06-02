@@ -2,6 +2,7 @@ package com.example.realestate.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,15 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.OrderViewH
                         if (e == null) {
                             object.put("status", 1);
                             object.saveInBackground();
-                            notifyDataSetChanged();
+                            ParseQuery<ParseObject> property = ParseQuery.getQuery("property_list");
+                            property.getInBackground(ordersList.get(getAdapterPosition()).getBuyID(), ((object1, e1) -> {
+                                if (e1 == null) {
+                                    object1.put("sold", 1);
+                                    object1.saveInBackground();
+                                } else {
+                                    Log.d("ERR12", e1.getMessage());
+                                }
+                            }));
                             adb.dismiss();
                             Toast.makeText(v.getContext(), "تمت عملية الشراء بنجاح", Toast.LENGTH_SHORT).show();
                         } else {

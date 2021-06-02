@@ -264,6 +264,7 @@
 
                         <TextView
                             android:id="@+id/property_price_usd"
+                            android:textColor="@color/notok"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/navigation_activity_topics_margin" />
@@ -284,6 +285,7 @@
 
                         <TextView
                             android:id="@+id/property_price_sdg"
+                            android:textColor="@color/notok"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/navigation_activity_topics_margin" />

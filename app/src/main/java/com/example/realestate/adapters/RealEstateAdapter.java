@@ -51,6 +51,24 @@ public class RealEstateAdapter extends RecyclerView.Adapter<RealEstateAdapter.Re
         } else if (current.getProperty2ndCorner() == 1) {
             holder.type.setText("الناصية الثانية");
         }
+
+        if (current.getPropertySold() == 0) {
+            holder.sold.setText("متوفرة");
+        } else if (current.getPropertySold() == 1) {
+            holder.sold.setText("تم البيع");
+        } else if (current.getPropertySold() == 2) {
+            holder.sold.setText("الناصية الثانية");
+        }
+    }
+
+    public void clear() {
+        propertyProbs.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(ArrayList<RealEstateClass> items) {
+        propertyProbs.addAll(items);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -68,6 +86,7 @@ public class RealEstateAdapter extends RecyclerView.Adapter<RealEstateAdapter.Re
         TextView price;
         TextView type;
         TextView title;
+        TextView sold;
         String objectID;
         Context ctx;
 
@@ -77,6 +96,7 @@ public class RealEstateAdapter extends RecyclerView.Adapter<RealEstateAdapter.Re
             price = itemView.findViewById(R.id.price);
             type = itemView.findViewById(R.id.type);
             title = itemView.findViewById(R.id.title_land);
+            sold = itemView.findViewById(R.id.sold_status);
 
             itemView.setOnClickListener(this);
 

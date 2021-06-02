@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -26,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
 
+    SwipeRefreshLayout swipeRL;
     RecyclerView myRecycler;
     RecyclerView.LayoutManager layoutManager;
     RealEstateAdapter realEstateAdapter;
@@ -97,11 +99,56 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        swipeRL = findViewById(R.id.swipeContainer);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        myRecycler = findViewById(R.id.recycler_list);
+        myRecycler.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        myRecycler.setLayoutManager(layoutManager);
+
         runQuery();
+
+        swipeRL.setOnRefreshListener(this::refreshQuery);
+
+        swipeRL.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+    }
+
+    public void refreshQuery() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("property_list");
+
+        query.setLimit(200); // limit to at most 10 results
+//        query.setSkip(10); // skip the first 10 results
+        propertyList.clear();
+        realEstateAdapter.clear();
+
+        query.findInBackground((objects, e) -> {
+            if(e == null){
+                int x = 0;
+                for (ParseObject result : objects) {
+                    propertyList.add(new RealEstateClass(result.getObjectId(), result.getInt("property_id"), result.getInt(""), result.getString("location"),
+                            result.getInt(""), result.getInt("first_corner"), result.getInt("second_corner"), result.getInt("single"),
+                            result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
+                            result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
+                            result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
+                            result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
+                            result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
+                            result.getInt("dollar"), result.getInt("sdg"), result.getInt("sold")));
+                }
+
+
+                realEstateAdapter.addAll(propertyList);
+                swipeRL.setRefreshing(false);
+            }else{
+                Log.d("Object error ", e.getMessage());
+            }
+        });
     }
 
     public void runQuery() {
@@ -121,15 +168,11 @@ public class MainActivity extends AppCompatActivity {
                             result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
                             result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
                             result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),
-                            result.getInt("dollar"), result.getInt("sdg")));
+                            result.getInt("dollar"), result.getInt("sdg"), result.getInt("sold")));
                 }
 
-                myRecycler = findViewById(R.id.recycler_list);
-                myRecycler.setHasFixedSize(true);
-                layoutManager = new LinearLayoutManager(this);
-                realEstateAdapter = new RealEstateAdapter(propertyList, getApplicationContext());
 
-                myRecycler.setLayoutManager(layoutManager);
+                realEstateAdapter = new RealEstateAdapter(propertyList, getApplicationContext());
                 myRecycler.setAdapter(realEstateAdapter);
             }else{
                 Log.d("Object error ", e.getMessage());
