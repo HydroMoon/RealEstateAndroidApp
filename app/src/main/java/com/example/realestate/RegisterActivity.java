@@ -42,6 +42,7 @@ public class RegisterActivity extends AppCompatActivity {
         user.setEmail(phone.getText().toString() + "@email.com");
         user.put("name", name.getText().toString());
         user.put("phone", phone.getText().toString());
+        user.put("admim", 0);
 
         // Other fields can be set just like any other ParseObject,
         // using the "put" method, like this: user.put("attribute", "its value");

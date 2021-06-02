@@ -1,5 +1,6 @@
 package com.example.realestate;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -7,16 +8,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.example.realestate.adapters.OrdersAdapter;
 import com.example.realestate.adapters.RealEstateAdapter;
+import com.example.realestate.models.OrderClass;
 import com.example.realestate.models.RealEstateClass;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,10 +30,24 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     RealEstateAdapter realEstateAdapter;
     ArrayList<RealEstateClass> propertyList = new ArrayList<>();
+    ArrayList<OrderClass> orderList = new ArrayList<>();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
+        MenuItem item = menu.findItem(R.id.orders_m);
+
+        ParseUser.getCurrentUser().fetchInBackground(((object, e) -> {
+            Log.d("BH ERR:", String.valueOf(object.getInt("admin")));
+            if (object.getInt("admin") == 1) {
+                item.setVisible(true);
+            } else {
+                item.setVisible(false);
+            }
+        }));
+
+
+
         return true;
     }
 
@@ -35,7 +55,36 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == 0) {
+        if (id == R.id.orders_m) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("buy_history");
+
+            query.findInBackground((objects, e) -> {
+                if (e == null) {
+                    orderList.clear();
+                    for (ParseObject object: objects) {
+                        orderList.add(new OrderClass(object.getString("user_name"), object.getObjectId(), object.getString("buy_id"),
+                                object.getString("user_id"), object.getInt("status"), object.getString("property_number")));
+                    }
+                    final AlertDialog adb = new AlertDialog.Builder(MainActivity.this, R.style.AlertDiagTheme).create();
+                    LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                    View view = inflater.inflate(R.layout.orders_recycle, null);
+                    adb.setView(view);
+
+                    RecyclerView order_rv = view.findViewById(R.id.recycler_orders);
+                    order_rv.setHasFixedSize(true);
+                    RecyclerView.LayoutManager lom = new LinearLayoutManager(adb.getContext());
+                    order_rv.setLayoutManager(lom);
+
+                    OrdersAdapter ordersAdapter = new OrdersAdapter(orderList, adb.getContext(), adb);
+                    order_rv.setAdapter(ordersAdapter);
+
+                    adb.show();
+                } else {
+                    Log.d("BH ERR:", e.getMessage());
+                }
+            });
+
+        } else if (id == R.id.logout_m) {
             ParseUser.logOut();
             finish();
         }
@@ -65,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
             if(e == null){
                 int x = 0;
                 for (ParseObject result : objects) {
-                    Log.d("Object found " + x++, result.getString("location"));
                     propertyList.add(new RealEstateClass(result.getObjectId(), result.getInt("property_id"), result.getInt(""), result.getString("location"),
                             result.getInt(""), result.getInt("first_corner"), result.getInt("second_corner"), result.getInt("single"),
                             result.getInt(""), result.getInt(""), result.getInt(""), result.getInt(""),

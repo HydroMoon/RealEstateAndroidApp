@@ -2,7 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:title="Logout"
+        android:id="@+id/orders_m"
+        android:title="Orders"
         app:showAsAction="always"
         android:orderInCategory="0" />
+
+    <item
+        android:id="@+id/logout_m"
+        android:title="Logout"
+        app:showAsAction="never"
+        android:orderInCategory="1" />
 </menu>

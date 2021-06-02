@@ -9,12 +9,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class PropertyInfo extends AppCompatActivity {
 
@@ -32,6 +36,8 @@ public class PropertyInfo extends AppCompatActivity {
     Button call;
 
     GridView serviceGrid;
+
+    String objectID;
 
     List<String> serviceItems = new ArrayList<>();
 
@@ -53,6 +59,7 @@ public class PropertyInfo extends AppCompatActivity {
         status = findViewById(R.id.property_status);
         area = findViewById(R.id.property_surface);
         location = findViewById(R.id.property_location);
+        addedDate = findViewById(R.id.added_date);
 
         buy = findViewById(R.id.buy);
         call = findViewById(R.id.call);
@@ -60,19 +67,26 @@ public class PropertyInfo extends AppCompatActivity {
         priceUSD = findViewById(R.id.property_price_usd);
         priceSDG = findViewById(R.id.property_price_sdg);
 
-        Log.d("DEBUG", getIntent().getExtras().getString("objectID"));
-        getPropertyInfo(getIntent().getExtras().getString("objectID"));
+        objectID = getIntent().getExtras().getString("objectID");
+
+        Log.d("DEBUG", objectID);
+        getPropertyInfo(objectID);
 
         buy.setOnClickListener(v -> {
 
             ParseObject buyHistory = new ParseObject("buy_history");
-            buyHistory.put("buy_id", "OBJECT_ID");
+            buyHistory.put("buy_id", objectID);
+            buyHistory.put("user_name", ParseUser.getCurrentUser().get("name"));
+            buyHistory.put("user_id", ParseUser.getCurrentUser().getObjectId());
+            buyHistory.put("status", 0);
+            buyHistory.put("property_number", number.getText().toString());
 
             buyHistory.saveInBackground(e -> {
                 if (e == null) {
-
+                    Toast.makeText(getApplicationContext(), "Purchased Successfully", Toast.LENGTH_LONG).show();
                 } else {
                     //error
+                    Log.d("ERROR", e.getMessage());
                 }
             });
         });
@@ -156,12 +170,17 @@ public class PropertyInfo extends AppCompatActivity {
                     //Status (Sold, Not Sold)
                     if (result.getInt("sold") == 1) {
                         status.setText("Sold");
+                    } else if (result.getInt("sold") == 0) {
+                        status.setText("Available");
                     }
 
                     //Area
                     area.setText(String.valueOf(result.getInt("area")));
-                    //location
+                    //Location
                     location.setText(result.getString("location"));
+                    //Added date
+                    SimpleDateFormat sdf = new SimpleDateFormat("EEE, d MMM yyyy", Locale.US);
+                    addedDate.setText(sdf.format(result.getCreatedAt()));
 
                     //Prices
                     priceUSD.setText(String.valueOf(result.getInt("dollar")));
