@@ -32,11 +32,11 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/toolbar_item"
             android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" >
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -63,6 +63,7 @@
                     <TextView
                         android:id="@+id/short_description"
                         android:layout_width="match_parent"
+                        android:text="East Nile - Al Faihaa"
                         android:layout_height="wrap_content" />
 
                 </LinearLayout>
@@ -114,25 +115,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/navigation_activity_scroll_items_margin"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Description"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/activity_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/navigation_activity_scroll_items_margin"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -171,6 +153,7 @@
                             android:id="@+id/property_location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="شرق النيل"
                             android:layout_marginBottom="@dimen/navigation_activity_topics_margin" />
                     </LinearLayout>
 
@@ -340,6 +323,14 @@
                     <Button
                         android:id="@+id/buy"
                         android:text="Buy"
+                        android:layout_weight="0.5"
+                        android:layout_margin="1dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <Button
+                        android:id="@+id/del_land"
+                        android:text="Delete"
                         android:layout_weight="0.5"
                         android:layout_margin="1dp"
                         android:layout_width="wrap_content"

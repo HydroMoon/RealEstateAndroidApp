@@ -14,4 +14,16 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string name="cc_error">Please enter your card number</string>
+    <string name="exp_cc">Please enter expiry date</string>
+    <string name="cc_pin">Please enter your secret pin</string>
+    <string name="pin_digit">Please enter 4 digits!</string>
+    <string name="cc_digit">Please enter 14 digits!</string>
+    <string name="select_date">Select date</string>
+    <string name="payment">Payment Info</string>
+    <string name="cc_number">CC number</string>
+    <string name="expiray_date">Expiray date</string>
+    <string name="ipin_number">iPin number</string>
+    <string name="pay">Pay</string>
 </resources>

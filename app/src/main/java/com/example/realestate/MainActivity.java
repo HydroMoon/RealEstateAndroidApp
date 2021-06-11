@@ -1,13 +1,7 @@
 package com.example.realestate;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,16 +9,31 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.example.realestate.adapters.OrdersAdapter;
 import com.example.realestate.adapters.RealEstateAdapter;
+import com.example.realestate.adapters.UsersAdapter;
 import com.example.realestate.models.OrderClass;
 import com.example.realestate.models.RealEstateClass;
+import com.example.realestate.models.UserClass;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     RealEstateAdapter realEstateAdapter;
     ArrayList<RealEstateClass> propertyList = new ArrayList<>();
     ArrayList<OrderClass> orderList = new ArrayList<>();
+    ArrayList<UserClass> userList = new ArrayList<>();
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -91,9 +101,53 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+        } else if (id == R.id.users) {
+            HashMap<String, String> params = new HashMap<>();
+            ParseCloud.callFunctionInBackground("getUsers", params, (FunctionCallback<String>) (object, e) -> {
+                if (e == null) {
+                    userList.clear();
+                    JSONArray users = null;
+                    try {
+                        users = new JSONArray(object);
+                    } catch (JSONException jsonException) {
+                        jsonException.printStackTrace();
+                    }
+
+                    for (int i = 0; i < users.length(); i++) {
+                        try {
+                            JSONObject user = users.getJSONObject(i);
+                            userList.add(new UserClass(user.getString("name"), user.getString("phone"), user.getString("objectId")));
+                        } catch (JSONException jsonException) {
+                            jsonException.printStackTrace();
+                        }
+                    }
+
+                    final AlertDialog adb = new AlertDialog.Builder(MainActivity.this, R.style.AlertDiagTheme).create();
+                    LayoutInflater inflater = LayoutInflater.from(MainActivity.this);
+                    View view = inflater.inflate(R.layout.orders_recycle, null);
+                    adb.setView(view);
+                    adb.setButton(DialogInterface.BUTTON_POSITIVE, "Ok", (dialog, which) -> {
+                        dialog.dismiss();
+                    });
+
+                    RecyclerView order_rv = view.findViewById(R.id.recycler_orders);
+                    order_rv.setHasFixedSize(true);
+                    RecyclerView.LayoutManager lom = new LinearLayoutManager(adb.getContext());
+                    order_rv.setLayoutManager(lom);
+
+                    UsersAdapter usersAdapter = new UsersAdapter(userList, adb.getContext());
+                    order_rv.setAdapter(usersAdapter);
+
+                    adb.show();
+                } else {
+                    Log.d("CLDERR", e.getMessage());
+                }
+            });
         } else if (id == R.id.logout_m) {
             ParseUser.logOut();
             finish();
+        } else if (id == R.id.add_land) {
+            startActivity(new Intent(MainActivity.this, AddRealEstate.class));
         }
         return super.onOptionsItemSelected(item);
     }

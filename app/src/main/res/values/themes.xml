@@ -17,4 +17,10 @@
     <style name="AlertDiagTheme" parent="Theme.AppCompat.Dialog.Alert">
 
     </style>
+
+    <style name="recycleDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorBackgroundFloating">@color/purple_500</item>
+        <item name="android:textColorPrimary">@color/white</item>
+    </style>
+
 </resources>

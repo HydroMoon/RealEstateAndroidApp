@@ -8,8 +8,20 @@
         android:orderInCategory="0" />
 
     <item
+        android:id="@+id/add_land"
+        android:title="Add Land"
+        app:showAsAction="never"
+        android:orderInCategory="1" />
+
+    <item
+        android:id="@+id/users"
+        android:title="Users"
+        app:showAsAction="never"
+        android:orderInCategory="2" />
+
+    <item
         android:id="@+id/logout_m"
         android:title="Logout"
         app:showAsAction="never"
-        android:orderInCategory="1" />
+        android:orderInCategory="3" />
 </menu>
